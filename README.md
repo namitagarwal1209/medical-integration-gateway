@@ -13,20 +13,15 @@ The application consists of four services:
 - **Analysis Service:** Simulated medical analysis application generating predefined analysis results and PDF reports.
 - **Orthanc:** Open source DICOM server for storing and inspecting imaging studies.
 
-```mermaid
 flowchart TD
-    A["DICOM Upload"] --> B["Medical Gateway API"]
-    B --> C["Request Patient Risk Factors"]
-    C --> D["Simulated EMR"]
-    D -->|Return Risk Factors| B
-    B --> E["Medical Analysis Service"]
-    E -->|Analysis Results| B
-    B --> F["Retrieve Generated PDF Report"]
-    F --> G["Send PDF Report to EMR"]
-    G --> H["Modify DICOM Patient Attributes"]
-    H --> I["Upload DICOM to Orthanc PACS"]
-    I --> J["Processing Complete"]
-```
+    A["Receive DICOM"] --> B["Extract Patient ID"]
+    B --> C["Modify / Deidentify DICOM"]
+    C --> D["Store DICOM in Orthanc"]
+    D --> E["Retrieve Risk Factors from EMR"]
+    E --> F["Submit Case for Analysis"]
+    F --> G["Generate PDF Report"]
+    G --> H["Send Report to EMR"]
+    H --> I["Processing Complete"]
 
 The gateway coordinates communication between services, tracks case processing status, and logs integration failures.
 
