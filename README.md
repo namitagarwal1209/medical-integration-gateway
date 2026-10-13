@@ -14,24 +14,23 @@ The application consists of four services:
 - **Orthanc:** Open source DICOM server for storing and inspecting imaging studies.
   
 ```mermaid
-%%{init: {"flowchart": {"htmlLabels": false}}}%%
 
+%%{init: {"flowchart": {"htmlLabels": true, "wrappingWidth": 300, "useMaxWidth": true}}}%%
 flowchart TD
-    A["Upload DICOM"]
-    B["Medical Gateway"]
-    C["Extract Patient ID"]
-    D["Request Risk Factors"]
-    E["Receive Risk Factors"]
-    F["Submit Case for Analysis"]
-    G["Receive Analysis Results"]
-    H["Retrieve PDF Report"]
-    I["Send Report to EMR"]
-    J["Modify DICOM Attributes"]
-    K["Store DICOM in Orthanc"]
-    L["Processing Complete"]
+    A("Upload DICOM") --> B("Medical Gateway")
 
-    A --> B --> C --> D --> E --> F
-    F --> G --> H --> I --> J --> K --> L
+    B --> C("Request Risk Factors")
+    C --> D("Simulated EMR")
+    D -->|"Return Risk Factors"| B
+
+    B --> E("Analysis Service")
+    E -->|"Return Results"| B
+
+    B --> F("Retrieve PDF Report")
+    F --> G("Send PDF to EMR")
+    G --> H("Modify DICOM")
+    H --> I("Store in Orthanc")
+    I --> J("Processing Complete")
 
 
 ```
